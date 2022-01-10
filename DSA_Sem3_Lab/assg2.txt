@@ -1,0 +1,90 @@
+class MyString:
+    def _init_(self):
+        self.lstchar = []
+        self.len = 0
+        self.lstwords = []
+
+    def get_char_and_word(self):
+        input_string = input("Enter the string :")
+        self.lstwords = list(input_string.split(" "))
+
+        for i in input_string:
+            self.lstchar.append(i)
+            self.len = self.len + 1
+
+    def frequency_count(self, ch):
+        count = 0
+        for i in self.lstchar:
+            if i == ch:
+                count = count + 1
+        return count
+
+    def longest_word(self):
+        long_len = 0
+        longest_word = None
+        for i in self.lstwords:
+            s = str(i)
+            if len(s) > long_len:
+                long_len = len(s)
+                longest_word = s
+        return longest_word
+
+    def check_palindrome(self):
+        start = 0
+        palindrome = True
+        end = len(self.lstchar) - 1
+        while (start < end):
+            if (self.lstchar[start] != self.lstchar[end]):
+                palindrome = False
+                break
+            else:
+                start += 1
+                end -= 1
+
+        if palindrome:
+            print("Palindrome...")
+        else:
+            print("Not palindrome...")
+
+    def count_occurence(self):
+        for i in self.lstwords:
+            print('The occurrence of word ', i, ' in string is', self.lstwords.count(i))
+
+    def occurrence_of_substring(self, substring):
+        for i in range(len(self.lstchar)):
+            s_index = 0  # indexes of substring
+            counter = 0  # to keep track of length of substring
+            for j in range(i, i + len(substring)):
+                if substring[s_index] == self.lstchar[j]:
+                    counter += 1
+
+                    if counter == len(substring):
+                        return j - len(substring) + 1
+                    if s_index == len(substring) - 1:  # to avoid going out of index values of substring
+                        # sindex should not go beyond length of substring
+                        break
+                else:
+                    break
+                s_index += 1  # to know index where it starts
+
+        return "not found"
+
+
+string1 = MyString()
+string1.get_char_and_word()
+
+count = string1.frequency_count("t")
+print("The occurrence of word 't' in string is :", count)
+
+print("The list of characters in string is :", string1.lstchar)
+
+print("The list of words in string is :", string1.lstwords)
+
+long_word = string1.longest_word()
+print("The longest word in string is :", long_word)
+
+print("The string is:")
+string1.check_palindrome()
+
+print("The occurrence of substring 'pict' in string at index of :")
+print(string1.occurrence_of_substring("pict"))

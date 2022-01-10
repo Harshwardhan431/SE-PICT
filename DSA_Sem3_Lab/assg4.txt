@@ -1,0 +1,124 @@
+class Mysearch:
+    def _init_(self):
+        self.len = 0
+        self.arr = []
+        self.sorted_arr = []
+
+    def getarr(self):
+        size = int(input("Enter how many elements to be added:\n"))
+        self.len = size
+        for i in range(size):
+            element = int(input("Enter elements of array:\n"))
+            self.arr.append(element)
+
+    def selection_sort(self):
+        temparr = self.arr.copy()
+        for i in range(len(temparr) - 1):
+            for j in range(i + 1, len(temparr)):
+                if temparr[j] < temparr[i]:
+                    temp = temparr[i]
+                    temparr[i] = temparr[j]
+                    temparr[j] = temp
+        self.sorted_arr = temparr.copy()
+
+    def linear_search(self, element):
+        for i in range(self.len):
+            if self.arr[i] == element:
+                return i
+        return -1
+
+    def binary_search(self, element):
+        low = 0
+        high = self.len - 1
+        while low <= high:
+            mid = int((low + high) / 2)
+            if self.sorted_arr[mid] == element:
+                return mid
+
+            elif self.sorted_arr[mid] < element:
+                low = mid + 1
+
+            else:
+                high = mid - 1
+
+        return -1
+
+    def sentinel_search(self, element):
+        last = self.arr[self.len - 1]
+        self.arr[self.len - 1] = element
+        i = 0
+        while self.arr[i] != element:
+            i += 1
+        self.arr[self.len - 1] = last
+        if i < self.len - 1 or element == self.arr[self.len - 1]:
+            print("Element found by sentinel search at ", i)
+        else:
+            print("Element not found")
+
+    @staticmethod
+    def fib_series(n):
+        a = b = c = 1
+        if n == 0 or n == 1:
+            return 0
+        else:
+            while c < n:
+                c = a + b
+                a = b
+                b = c
+
+            return a
+
+    def fib_search(self, element):
+        flag = 0
+        low = 0
+        n = self.len - 1
+        high = n
+        while flag != 1 and low <= high:
+            index = self.fib_series(n)
+            if element == self.sorted_arr[index + low]:
+                flag = 1
+                break
+            elif element > self.sorted_arr[index + low]:
+                low = low + index + 1
+            else:
+                high = low + index - 1
+
+            n = high - low + 1
+
+        if flag == 1:
+            return index + low
+
+        else:
+            return -1
+
+
+a = Mysearch()
+a.getarr()
+print(a.arr)
+a.selection_sort()
+print(a.sorted_arr)
+num = int(input("Enter number which is to be found:"))
+
+print("MAIN MENU \n1.Linear search\n2.Binary search")
+print("3.Sentinel search\n4.Fibonacci search")
+while True:
+    choice = int(input("Enter choice : "))
+    if choice == 1:
+        index = a.linear_search(num)
+        print("Element found by linear search at index ", index)
+
+    if choice == 2:
+        index1 = a.binary_search(num)
+        print("Element found by binary search at index ", index1)
+
+    if choice == 3:
+        a.sentinel_search(num)
+
+    if choice == 4:
+        index2 = a.fib_search(num)
+        print("Element found by fibonacci search at index ", index2)
+    else:
+        print("Enter choice between 1 to 4:")
+        check = input("Do you want to continue?(y/n)")
+        if check == "n":
+            break

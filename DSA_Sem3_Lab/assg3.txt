@@ -1,0 +1,144 @@
+class Matrix:
+    def _init_(self):
+        self.rows = 0
+        self.columns = 0
+        self.mat = []
+
+    def getMatrix(self):
+        row = int(input("Enter number of rows:"))
+        self.rows = row
+        columns = int(input("Enter number of columns:"))
+        self.columns = columns
+
+        for i in range(row):
+            row = []
+            for j in range(columns):
+                column = int(input())
+                row.append(column)
+            self.mat.append(row)
+
+    def showMatrix(self):
+        for i in range(self.rows):
+            for j in range(self.columns):
+                print(self.mat[i][j], end="   ")
+            print("\n")
+
+    def addMatrix(self, m2):
+        m3 = Matrix()
+        if self.rows == m2.rows and self.columns == m2.columns:
+            m3.rows = self.rows
+            m3.columns = self.columns
+            for i in range(self.rows):
+                row = []
+                for j in range(self.columns):
+                    row.append(self.mat[i][j] + m2.mat[i][j])
+                m3.mat.append(row)
+            return m3
+
+        else:
+            print("Addition is not possible.")
+            return -1
+
+    def subMatrix(self, m2):
+        m3 = Matrix()
+        if self.rows == m2.rows and self.columns == m2.columns:
+            m3.rows = self.rows
+            m3.columns = self.columns
+            for i in range(self.rows):
+                row = []
+                for j in range(self.columns):
+                    row.append(self.mat[i][j] - m2.mat[i][j])
+                m3.mat.append(row)
+            return m3
+        else:
+            print("Subtraction is not possible.")
+            return -1
+
+    def matTranspose(self):
+        m3 = Matrix()
+        m3.rows = self.columns
+        m3.columns = self.rows
+        for i in range(self.columns):
+            row = []
+            for j in range(self.rows):
+                row.append(self.mat[j][i])
+            m3.mat.append(row)
+
+        return m3
+
+
+    # def mulMatrix(self, m2):
+    #     m3 = Matrix()
+    #     if self.columns == m2.rows:
+    #         m3.rows = self.rows
+    #         m3.columns = m2.columns
+    #         for i in range(self.rows):
+    #             row = []
+    #             for j in range(m2.columns):
+    #                 multiplication = 0
+    #                 for k in range(m2.rows):
+    #                     multiplication += self.mat[i][k] * m2.mat[k][j]
+    #                 row.append(multiplication)
+    #             m3.mat.append(row)
+    #         return m3
+    #     else:
+    #         print("Multiplication is not possible.")
+    #         return -1
+
+    def mulmatrix(self,m2):
+        m3 = Matrix()
+        if self.columns == m2.rows:
+            m3.rows = self.rows
+            m3.columns = m2.columns
+            for i in range(self.rows):
+                row = []
+                for j in range(m2.columns):
+                    multiplica = 0
+                    for k in range(m2.rows):
+                        multiplica += self.mat[i][k]*m2.mat[k][j]
+                    row.append(multiplica)
+                m3.mat.append(row)
+
+        return m3
+
+
+m = Matrix()
+print("Enter rows,columns and values of first matrix:")
+m.getMatrix()
+m2 = Matrix()
+print("Enter rows,columns and values of second matrix:")
+m2.getMatrix()
+
+print("MAIN MENU \n1.Addition of two matrices\n2.Subtraction of two matrices")
+print("3.Multiplication of two matrices \n4.transpose of matrix")
+while True:
+    choice = int(input("Enter choice : "))
+    if choice == 1:
+        ans1 = m.addMatrix(m2)
+        if ans1 != -1:
+            print("Addition is:\n")
+            ans1.showMatrix()
+
+    if choice == 2:
+        ans2 = m.subMatrix(m2)
+        if ans2 != -1:
+            print("Subtraction is:\n")
+            ans2.showMatrix()
+
+    if choice == 3:
+        ans3 = m.mulMatrix(m2)
+        if ans3 != -1:
+            print("Multiplication is:\n")
+            ans3.showMatrix()
+    if choice == 4:
+        ans4 = m.matTranspose()
+        ans5 = m2.matTranspose()
+        print("Transpose of first matrix is :\n")
+        ans4.showMatrix()
+        print("Transpose of second matrix is: \n")
+        ans5.showMatrix()
+    else:
+        print("Enter choice between 1 to 4:")
+        check = input("Do you want to continue?(y/n)")
+        if check == "n":
+            break

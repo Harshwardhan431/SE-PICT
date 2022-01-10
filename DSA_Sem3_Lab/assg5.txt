@@ -1,0 +1,77 @@
+class Mysort:
+    def _init_(self):
+        self.array = []
+        self.len = 0
+
+    def getarray(self):
+        n = int(input("Enter how many element to be added:\n"))
+        self.len = n
+        for i in range(n):
+            element = int(input("Enter elements:\n"))
+            self.array.append(element)
+
+    def selection_sort(self):
+        for i in range(self.len - 1):
+            for j in range(i + 1, len(self.array)):
+                if self.array[j] < self.array[i]:
+                    temp = self.array[i]
+                    self.array[i] = self.array[j]
+                    self.array[j] = temp
+
+    def bubble_sort(self):
+        for i in range(0, self.len):
+            for j in range(0, self.len - i - 1):
+                if self.array[j] > self.array[j + 1]:
+                    temp = self.array[j]
+                    self.array[j] = self.array[j + 1]
+                    self.array[j + 1] = temp
+
+    def insertion_sort(self):
+        for i in range(1, self.len):
+            current_value = self.array[i]
+            created_hole = i
+            while created_hole > 0 and self.array[created_hole - 1] > current_value:
+                self.array[created_hole] = self.array[created_hole - 1]
+                created_hole = created_hole - 1
+            self.array[created_hole] = current_value
+
+    def shell_sort(self):
+        size = len(self.array)
+        gap = int(size / 2)
+        while gap > 0:
+            for i in range(gap, size):
+                current = self.array[i]
+                j = i
+                while j >= gap and self.array[j - gap] > current:
+                    self.array[j] = self.array[j - gap]
+                    j -= gap
+                self.array[j] = current
+
+            gap = int(gap / 2)
+
+
+s1 = Mysort()
+s1.getarray()
+print("MAIN MENU \n1.Selection sort\n2.Bubble sort")
+print("3.Insertion sort\n4.Shell sort")
+while True:
+    choice = int(input("Enter choice : "))
+    if choice == 1:
+        s1.selection_sort()
+        print(s1.array)
+
+    if choice == 2:
+        s1.bubble_sort()
+        print(s1.array)
+
+    if choice == 3:
+        s1.insertion_sort()
+        print(s1.array)
+    if choice == 4:
+        s1.shell_sort()
+        print(s1.array)
+    else:
+        print("Enter choice between 1 to 4:")
+        check = input("Do you want to continue?(y/n)")
+        if check == "n":
+            break

@@ -1,0 +1,107 @@
+class Set:
+    def _init_(self, n):
+        self.lst = []
+        self.n = n
+        self.set_creation(n)
+
+    def length(self, lst):
+        count = 0
+        for i in lst:
+            count += 1
+        return count
+
+    def add_element(self, item):
+        self.lst += [item]
+
+    def is_exist(self, name):
+        for i in range(0, self.length(self.lst)):
+            if self.lst[i] == name:
+                return True
+        return False
+
+    def set_creation(self, n):
+        for i in range(n):
+            student = input("Enter name of student : ")
+            if not self.is_exist(student):
+                self.add_element(student)
+
+    def set_difference(self, grp1, grp2):
+        diff = []
+        for i in range(self.length(grp1)):
+            count = 0
+            for j in range(self.length(grp2)):
+                if grp1[i] != grp2[j]:
+                    count += 1
+                if count == self.length(grp2):
+                    diff += [grp1[i]]
+        return diff
+
+    def display(self, lst):
+        print("{", end="")
+        for i in range(0, self.length(lst)):
+            if lst[i] != lst[len(lst) - 1]:
+                print(lst[i], end=",")
+            else:
+                print(lst[i], end="")
+        print("}")
+
+    def set_intersection(self, grp2):
+        intersection = []
+        m = self.length(self.lst)
+        n = self.length(grp2)
+        for i in range(m):
+            for j in range(n):
+                if self.lst[i] == grp2[j]:
+                    intersection += [grp2[j]]
+        return intersection
+
+    def set_union(self, grp2):
+        union = []
+        for i in range(self.length(self.lst)):
+            union += [self.lst[i]]
+        for i in range(self.length(grp2)):
+            count = 0
+            for j in range(self.length(union)):
+                if grp2[i] != union[j]:
+                    count = count + 1
+            if count == self.length(union):
+                union += [grp2[i]]
+        return union
+
+
+n1 = int(input("Enter number of students who play cricket :"))
+cricket = Set(n1)
+n2 = int(input("Enter number of students who play badminton:"))
+badminton = Set(n2)
+n3 = int(input("Enter number of students who play football:"))
+football = Set(n3)
+
+print("Grp1:", end="")
+cricket.display(cricket.lst)
+print("Grp2:", end="")
+badminton.display(badminton.lst)
+print("Grp3:", end="")
+football.display(football.lst)
+
+
+ans1 = cricket.set_intersection(badminton.lst)
+print("Students playing cricket and badminton :", end="")
+cricket.display(ans1)
+
+temp1 = cricket.set_union(badminton.lst)
+temp2 = cricket.set_intersection(badminton.lst)
+ans2 = cricket.set_difference(temp1, temp2)
+print("Students playing cricket or badminton but not both:", end="")
+cricket.display(ans2)
+
+grp1 = football.lst
+grp2 = cricket.set_union(badminton.lst)
+ans3 = cricket.set_difference(grp1, grp2)
+print("Number of students playing neither cricket nor badminton :", end="")
+print(cricket.length(ans3))
+
+grp1 = cricket.set_intersection(football.lst)
+grp2 = badminton.lst
+ans4 = cricket.set_difference(grp1, grp2)
+print("Number of students playing cricket and football but not badminton :", end="")
+print(cricket.length(ans4))

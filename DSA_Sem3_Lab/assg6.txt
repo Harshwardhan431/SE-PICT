@@ -1,0 +1,49 @@
+class Quicksort:
+    def _init_(self):
+        self.arr = []
+        self.length = 0
+
+    def getarr(self):
+        n = int(input("Enter how many element to be added:\n"))
+        self.length = n
+        for i in range(n):
+            element = int(input("Enter elements:\n"))
+            self.arr.append(element)
+
+    def partition(self, start, end):
+        pivot_index = start
+        pivot = self.arr[pivot_index]
+
+        while start < end:
+            while start < self.length and self.arr[start] <= pivot:
+                start += 1
+
+            while self.arr[end] > pivot:
+                end -= 1
+
+            if start < end:
+                temp = self.arr[start]
+                self.arr[start] = self.arr[end]
+                self.arr[end] = temp
+
+        temp = self.arr[end]
+        self.arr[end] = self.arr[pivot_index]
+        self.arr[pivot_index] = temp
+
+        return end
+
+    def quick_sort(self, start, end):
+
+        if start < end:
+            partitionindex = self.partition(start, end)
+            self.quick_sort(start, partitionindex - 1)
+            self.quick_sort(partitionindex + 1, end)
+
+
+arr = Quicksort()
+arr.getarr()
+print("Enter range in which array should be sorted:")
+first = int(input("Enter first index:"))
+last = int(input("Enter last index:"))
+arr.quick_sort(first, last)
+print(arr.arr)
