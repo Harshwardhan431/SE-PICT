@@ -96,12 +96,11 @@ void Stack::Push(Node *p)
 
 class Tree
 {
-    Node *root,*root1;
+    Node *root;
     public:
     Tree()
     {
         root=NULL;
-        root1=NULL;
     }
     void create(int x);
     Node *Insert(Node *t,int x);
@@ -113,60 +112,41 @@ class Tree
     void PostOrder_Iter(Node *t);
     int Height(Node *t);
     Node* AccessRootNode();
-    Node* AccessRootNode1();
     int LeafNode(Node *t);
     int TotalNode(Node *t);
     void EraseAllNode(Node *t);
     Node* deleteLeaves(Node *t,int x);
-    void Copy(Tree t);
-    void create1(int x);
-    Node* Insert1(Node *t,int x);
+    Node* Mirror(Node *t);
+    Node* Copy(Node *t);
 };
 
-Node* Tree::Insert1(Node *t,int x)
+Node* Tree::Copy(Node *t)
 {
-    Node *p;
+    if (t==NULL)return t;
 
-    if (t==nullptr)
-    {
-        p=new Node(x);
-        return p;
-    }else{            
-        t->lchild=Insert1(t->lchild,x);
-        t->rchild=Insert1(t->rchild,x);
+        Node *temp=new Node(t->data);
+        temp->lchild=Copy(t->lchild);
+        temp->rchild=Copy(t->rchild);
+        return temp;
+}
+
+Node* Tree::Mirror(Node *t)
+{
+    if (t==NULL)return NULL;
+    
+    Node* left;
+    Node* right;
+
+    if (t){
+        left=Mirror(t->lchild);
+        right=Mirror(t->rchild);
+        
+        Node* temp=t->lchild;
+        t->lchild=t->rchild;
+        t->rchild=temp;
     }
     return t;
 }
-
-void Tree::create1(int x)
-{
-    if (root1==NULL){
-        cout<<"Root Node created "<<endl;
-        root1=new Node(x);
-    }else{
-        cout<<"Node with value "<<x<<" added"<<endl;
-        Insert1(root1,x);
-    }
-}
-
-void Tree::Copy(Tree t)
-{
-    Node *i=root;
-    Stack st;
-    while (i!=NULL || st.isEmpty()==false)
-    {
-        if (i!=NULL)
-        {
-            create1(i->data);
-            st.Push(i);
-            i=i->lchild;
-        }else{
-            i=st.Pop();
-            i=i->rchild;
-        }
-    }
-}
-
 
 void Tree::PreOrder_Iter(Node *t)
 {
@@ -184,7 +164,6 @@ void Tree::PreOrder_Iter(Node *t)
         }
     }
 }
-
 
 Node* Tree::deleteLeaves(Node *t,int x)
 {
@@ -335,10 +314,6 @@ Node* Tree::AccessRootNode()
     return root;
 }
 
-Node* Tree::AccessRootNode1()
-{
-    return root1;
-}
 
 void Tree::PreOrder_Rec(Node *t)
 {
@@ -386,9 +361,8 @@ Node* Tree::Insert(Node *t,int x)
 
 int main()
 {
-    Tree t,t1;
+    Tree t;
     int choice=0;
-
     while (choice!=-1)
     {
         cout<<"Enter 1 to create the Tree"<<endl;
@@ -451,6 +425,7 @@ int main()
         else if (choice==8)
         {
             Node *i=t.AccessRootNode();
+            cout<<"Height of the Tree is :- ";
             cout<<t.Height(i)<<endl;
         }
         else if (choice==9)
@@ -471,15 +446,20 @@ int main()
         }
         else if (choice==12)
         {
-            //Change a tree so that the roles of the left and right pointers are swapped at every node
+            Node *i=t.AccessRootNode();
+            t.Mirror(i);
+            cout<<"The PreOrder Travsel of the mirror image is :-"<<endl;
+            t.PreOrder_Rec(i);
+            cout<<endl;
         }
         else if (choice==13)
         {
-            t1.Copy(t);
-            Node *u=t1.AccessRootNode1();
-            cout<<"The PreOrder of copied Node is "<<endl;
-            t1.PreOrder_Iter(u);
-            cout<<endl;
+           Node *i=t.AccessRootNode();
+           Tree t1;
+           Node *root1=t1.Copy(i);
+           cout<<"PreOrder travsel of the Copied tree is :- "<<endl;
+           t1.PreOrder_Rec(root1);
+           cout<<endl;
         }
         else if (choice==14)
         {
