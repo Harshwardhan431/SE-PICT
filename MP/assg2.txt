@@ -1,3 +1,5 @@
+;Take a string as input and prints its length
+
 section .data
         msg db 'Enter the string',10
         len equ $-msg
@@ -7,9 +9,10 @@ section .data
         len4 equ $-msg4
         msg3 db 'Program Ended',10
         len3 equ $-msg3
+
 section .bss
-        str1 resb 50
-        strlen1 resb 5
+    str1 resb 50
+    strlen1 resb 5
 
 %macro print 4
 mov rax,%1
@@ -18,14 +21,17 @@ mov rsi,%3
 mov rdx,%4
 syscall
 %endmacro
+
 section .text
-global _start
-_start:
+  global _start
+  _start:
+
 ;display msg
 syscall
 
-       print 01,01,msg,len
-        print 00,00,str1,10
+print 01,01,msg,len
+print 00,00,str1,10
+
 ;string will return in rax register
 ;hex to ascii to printing
         cmp al,9
@@ -37,6 +43,8 @@ syscall
         print 01,01,strlen1,10
         print 01,01,msg4,len4
         print 01,01,msg3,len3
+
+
 ;exit syscall
 mov rax,60
 mov rdi,00
