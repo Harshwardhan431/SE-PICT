@@ -1,0 +1,95 @@
+//Hashing
+
+#include<iostream>
+using namespace std;
+
+const int n=10;
+
+struct data
+{
+    int n;
+    string name;
+    public:
+    data(){
+         n=0;
+         name="";
+    }
+    friend class HashTable;
+};
+
+class HashTable
+{
+    data hasharr[n];
+    public:
+    int getCode(int x){
+        return x%n;
+    }
+    void serach(int key){
+        int ind=getCode(key);
+        int i=0;
+        while (hasharr[(ind+i)%n].n!=key)
+        {
+            i++;        }
+        cout<<"The value at "<<key<<" is "<<hasharr[(ind+i)%n].name<<endl;
+    }
+    void display(){
+        for(int i=0;i<n;i++){
+            cout<<"Key "<<hasharr[i].n<<" has "<<hasharr[i].name<<" value"<<endl;
+        }
+    }
+    int probe(int key,string name){
+        int ind=getCode(key);
+        int i=0;
+        while (hasharr[(i+ind)%n].n!=0)
+        {
+            i++;
+        }
+        return (i+ind)%n;
+    }
+
+    void insert(int x,string si){
+        int index=getCode(x);
+        if (hasharr[index].n!=0){
+            index=probe(x,si);
+        }
+        hasharr[index].n=x;
+        hasharr[index].name=si; 
+    }
+};
+
+int main()
+{
+    HashTable ht;
+    while (1)
+    {
+        int choice;
+        cout<<"Enter 1 for Inserting data in Linear Probing without Replcement"<<endl;
+        cout<<"Enter 2 for searching a value "<<endl;
+        cout<<"Enter 3 for display"<<endl;
+        cout<<"Enter 4 for Inserting data in Linear Probing with Replcement"<<endl;
+        cout<<"Enter -1 for exit"<<endl;
+        cin>>choice;
+        if (choice==1){
+            int k;
+            cout<<"Enter key to be inserted"<<endl;
+            cin>>k;
+            string s;
+            cout<<"Enter the phone number of "<<k<<" th key"<<endl;
+            cin>>s;
+            ht.insert(k,s);
+        }else if (choice==2){
+            int k;
+            cout<<"Enter the key to be seached"<<endl;
+            cin>>k;
+            ht.serach(k);
+        }else if (choice==3){
+            ht.display();
+        }else if (choice==4){
+
+        }
+        else if (choice==-1){
+            break;
+        }
+    }
+    return 0;
+}
