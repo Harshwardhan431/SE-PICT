@@ -32,8 +32,17 @@ class HashTable
         {
             i++;        }
         cout<<"The value at "<<key<<" is "<<hasharr[(ind+i)%n].name<<endl;
-    }
 
+    }
+    int comp(int key){
+        int ind=getCode(key);
+        int i=0;
+        while (hasharr[(ind+i)%n].n!=key)
+        {
+            i++;        }
+        return i;
+        
+    }
 
     void display(){
         for(int i=0;i<n;i++){
@@ -98,6 +107,7 @@ int main()
         cout<<"Enter 3 for display"<<endl;
         cout<<"Enter 4 for Inserting data in Linear Probing with Replcement"<<endl;
         cout<<"Enter 5 to delete an element from the hashtable"<<endl;
+        cout<<"Enter 6 to check number of comparsion"<<endl;
         cout<<"Enter -1 for exit"<<endl;
         cin>>choice;
         if (choice==1){
@@ -127,6 +137,10 @@ int main()
         	cout<<"Enter the key to be deleted"<<endl;
         	int x;cin>>x;
         	ht.del(x);
+        }else if (choice==6){
+            cout<<"Enter the key you want to check comparsion"<<endl;
+            int k;cin>>k;
+            cout<<"Comparsion are "<<ht.comp(k)<<endl;
         }
         else if (choice==-1){
             break;
