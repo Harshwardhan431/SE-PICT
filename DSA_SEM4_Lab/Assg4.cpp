@@ -24,6 +24,7 @@ class HashTable
     int getCode(int x){
         return x%n;
     }
+
     void serach(int key){
         int ind=getCode(key);
         int i=0;
@@ -32,12 +33,14 @@ class HashTable
             i++;        }
         cout<<"The value at "<<key<<" is "<<hasharr[(ind+i)%n].name<<endl;
     }
+
+
     void display(){
         for(int i=0;i<n;i++){
             cout<<"Key "<<hasharr[i].n<<" has "<<hasharr[i].name<<" value"<<endl;
         }
     }
-    int probe(int key,string name){
+    int probe(int key){
         int ind=getCode(key);
         int i=0;
         while (hasharr[(i+ind)%n].n!=0)
@@ -50,10 +53,37 @@ class HashTable
     void insert(int x,string si){
         int index=getCode(x);
         if (hasharr[index].n!=0){
-            index=probe(x,si);
+            index=probe(x);
         }
         hasharr[index].n=x;
-        hasharr[index].name=si; 
+        hasharr[index].name=si;
+    }
+
+    void insertWR(int x,string s){
+    	int index=getCode(x);
+    	if (hasharr[index].n==0){
+            hasharr[index].n=x;
+            hasharr[index].name=s;
+    	}else if (index==getCode(hasharr[index].n)){
+    		index=probe(x);
+    		 hasharr[index].n=x;
+    		 hasharr[index].name=s;
+    	}else{
+    		string ts=hasharr[index].name;
+    		int t=hasharr[index].n;
+    		hasharr[index].n=x;
+    		hasharr[index].name=s;
+    		index=probe(t);
+    		hasharr[index].n=t;
+    		hasharr[index].name=ts;
+
+    	}
+    }
+
+    void del(int key){
+    	int ind=getCode(key);
+    	hasharr[ind].n=0;
+    	hasharr[ind].name="";
     }
 };
 
@@ -67,6 +97,7 @@ int main()
         cout<<"Enter 2 for searching a value "<<endl;
         cout<<"Enter 3 for display"<<endl;
         cout<<"Enter 4 for Inserting data in Linear Probing with Replcement"<<endl;
+        cout<<"Enter 5 to delete an element from the hashtable"<<endl;
         cout<<"Enter -1 for exit"<<endl;
         cin>>choice;
         if (choice==1){
@@ -85,7 +116,17 @@ int main()
         }else if (choice==3){
             ht.display();
         }else if (choice==4){
-
+        	int k;
+        	cout<<"Enter key to be inserted"<<endl;
+        	cin>>k;
+        	string s;
+        	cout<<"Enter the phone number of "<<k<<" th key"<<endl;
+        	cin>>s;
+        	ht.insertWR(k, s);
+        }else if (choice==5){
+        	cout<<"Enter the key to be deleted"<<endl;
+        	int x;cin>>x;
+        	ht.del(x);
         }
         else if (choice==-1){
             break;
