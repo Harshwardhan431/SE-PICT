@@ -25,6 +25,15 @@ class HashTable
         return x%n;
     }
 
+    int count(int key){
+    	int ind=getCode(key);
+    	        int i=0;
+    	        while (hasharr[(ind+i)%n].n!=key)
+    	        {
+    	            i++;}
+    	        return (i+1);
+    }
+
     void serach(int key){
         int ind=getCode(key);
         int i=0;
@@ -41,7 +50,7 @@ class HashTable
         {
             i++;        }
         return i;
-        
+
     }
 
     void display(){
@@ -108,6 +117,7 @@ int main()
         cout<<"Enter 4 for Inserting data in Linear Probing with Replcement"<<endl;
         cout<<"Enter 5 to delete an element from the hashtable"<<endl;
         cout<<"Enter 6 to check number of comparsion"<<endl;
+        cout<<"Enter 7 to count the number of comp"<<endl;
         cout<<"Enter -1 for exit"<<endl;
         cin>>choice;
         if (choice==1){
@@ -141,6 +151,11 @@ int main()
             cout<<"Enter the key you want to check comparsion"<<endl;
             int k;cin>>k;
             cout<<"Comparsion are "<<ht.comp(k)<<endl;
+        }else if (choice==7){
+        	int k;
+        	cout<<"Enter the key to see the number of comp"<<endl;
+        	cin>>k;
+        	cout<<"Comparsion "<<ht.count(k)<<endl;
         }
         else if (choice==-1){
             break;
