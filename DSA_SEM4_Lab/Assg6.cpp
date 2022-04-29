@@ -1,156 +1,188 @@
-#include <iostream>
-#include<string>
-#include<string.h>
-#include<algorithm>
+/*
+Represent a given using adjancency list to perform DFS and BFS. 
+Use the map of the area around the college as the graph.
+Identify the prominent landmarks as nodes and perform DFS and BFS on that
+*/
+
+#include<iostream>
+#include<bits/stdc++.h>
 using namespace std;
 
-const int SIZE = 29;
-
-class HashEntry{
-    string word,meaning;
-    HashEntry *next;
-public:
-    HashEntry(){
-        word = meaning = "";
-        next = nullptr;
+class Node
+{
+    int data;
+    Node* link;
+    public:
+    Node()
+    {
+        data=0;
+        link=nullptr;
     }
-
-    HashEntry(string w,string m){
-        word = w;
-        meaning = m;
-        next = nullptr;
+    Node(int x)
+    {
+        data=x;
+        link=nullptr;
     }
-    friend class Dictionary;
+    friend class Graph;
 };
 
-class Dictionary{
-    HashEntry* ht[SIZE];
-public:
-    Dictionary(){
-        for(int i = 0;i < SIZE;i++)
-            ht[i] = nullptr;
+class Graph{
+    int vertices,edges;
+    Node** head;
+    public:
+    Graph(){
+        vertices=edges=0;
+        head=new Node*[vertices];
+        for(int i=0;i<vertices;i++){
+            head[i]=nullptr;
+        }
     }
 
-    int HashFunc(string word){
-        int res = 0;
-        for(int i = 0;i < (int)word.length();i++){
-            res += (word[i] - 'a')*i;
+    Graph(int v,int e)
+    {
+        vertices=v;
+        edges=e;
+        head=new Node*[vertices];
+        for(int i=0;i<vertices;i++){
+            head[i]=nullptr;
         }
-        return res%SIZE;
     }
 
-    void insert(string w,string m){
-        HashEntry* new1 = new HashEntry(w,m);
-        int hi = HashFunc(w);
-
-        if(ht[hi] == nullptr){  
-            ht[hi] = new1;
-            return;
+    void Create()
+    {
+        for(int i=0;i<edges;i++)
+        {
+            int source,destination;
+            cout<<"Enter the source"<<endl;
+            cin>>source;
+            cout<<"Enter the destination"<<endl;
+            cin>>destination;
+            
+            if (head[source]==nullptr){
+                Node* newSource=new Node(source);
+                head[source]=newSource;
+            }
+            
+            if (head[destination]==nullptr){
+                Node* newDestination=new Node(destination);
+                head[destination]=newDestination;
+            }
+            Node* p=head[source];
+            while (p->link!=nullptr)
+            {
+                p=p->link;
+            }
+            Node* desti=new Node(destination);
+            p->link=desti;
         }
-        HashEntry* curr = ht[hi];
-        while(curr->next != nullptr){
-            curr = curr->next;
-        }
-        curr->next = new1;
     }
 
-    void display(){
-        for(int i = 0;i < SIZE;i++){
-            if(ht[i]){
-                HashEntry *curr = ht[i];
-                cout << i << ": ";
-                while(curr){
-                    cout << "(" << curr->word << "," << curr->meaning << ") ->";
-                    curr = curr->next;
+    void Display()
+    {
+        for(int i=0;i<vertices;i++)
+        {
+            Node* t=head[i];
+            cout<<i<<" ";
+            while (t!=nullptr)
+            {
+                cout<<t->data<<" -> ";
+                t=t->link;
+            }
+            cout<<endl;
+        }
+    }
+
+    void BFS()
+    {
+        bool visited[vertices];
+        for(int i=0;i<vertices;i++){
+            visited[i]=false;
+        }
+
+        queue<int> q;
+        int starting=0;
+        q.push(starting);
+        while (!q.empty())
+        {
+            int popped=q.front();
+            q.pop();
+            if (visited[popped]!=true){
+                Node* temp=head[popped];
+                visited[popped]=true;
+                cout<<popped<<" ";
+                while (temp!=nullptr)
+                {
+                    if (visited[temp->data]!=true){
+                        q.push(temp->data);
+                    }
+                    temp=temp->link;
                 }
-                cout << "\n";
             }
         }
+          cout<<endl;
     }
 
-    void search(string key,int &cnt){
-        int hi = HashFunc(key);
-        cnt = -1;
-        if(ht[hi] == nullptr){
-            return;
+    void DFS()
+    {
+        stack<int> s;
+        bool visited[vertices];
+        for(int i=0;i<vertices;i++){
+            visited[i]=false;
         }
-
-        HashEntry *curr = ht[hi];
-        cnt = 0;
-        while(curr != nullptr){
-            cnt++;
-            if(curr->word == key){
-                return;
+        int starting=0;
+        s.push(starting);
+        while (!s.empty())
+        {
+            int popped=s.top();
+            s.pop();
+            if (visited[popped]!=true){
+                Node* temp=head[popped];
+                visited[popped]=true;
+                cout<<popped<<" ";
+            while (temp!=nullptr)
+            {
+                if (visited[temp->data]!=true){
+                    s.push(temp->data);
+                }
+                temp=temp->link;
             }
-            curr = curr->next;
+            }  
         }
-        cnt = -1;
-        return;
+        cout<<endl;
     }
-
-    void find(string w){
-        int c;
-        search(w,c);
-        if(c == -1){
-            cout << "Element " << w <<" not found in the dictionary" << "\n";
-            return;
-        }
-        cout << "Element " << w << " found in the dictionary :- " << "\n";
-        cout << "Word :- " << w << " Comparisions :- " << c << "\n";
-        return;
-    }
-
-    void remove(string w){
-        int c;
-        search(w,c);
-        
-        if(c == -1){
-            cout << "Element " << w <<" not found in the dictionary" << "\n";
-            return;
-        }
-
-        int hi = HashFunc(w);
-        HashEntry *curr = ht[hi],*prev = nullptr;
-        
-        if(c == 1){
-            ht[hi] = curr->next;
-            delete curr;
-            cout << "Deletion successfull" << "\n";
-            return;
-        }
-
-        while(curr->word != w){
-            prev = curr;
-            curr = curr->next;
-        }
-
-        prev->next = curr->next;
-        delete curr;
-
-        cout << "Deletion successfull" << "\n";
-
-        return;
-    }
-
 };
 
-int main() {
+int main()
+{
+    int choice;
 
-    Dictionary obj;
-    obj.insert("abc","1");
-    obj.insert("bcd","2");
-    obj.insert("cde","3");
-    obj.insert("def","4");
-    obj.insert("efg","5");
-    obj.insert("abc","6");
-    obj.insert("def","7");
-    obj.find("abc");
-    obj.find("efg");
-    obj.display();
-    obj.remove("abc");
-    obj.remove("abc");
-    obj.remove("xyz");
-    obj.display();
+    int vertex,edge;
+    cout<<"Enter the number of the vertices of the graph"<<endl;
+    cin>>vertex;
+    cout<<"Enter the number of the edges of the graph"<<endl;
+    cin>>edge;
 
-    return 0;
+    Graph g(vertex,edge);
+    while (1)
+    {
+        cout<<"Enter 1 to create graph"<<endl;
+        cout<<"Enter 2 to Display graph"<<endl;
+        cout<<"Enter 3 to get BFS pf the graph"<<endl;
+        cout<<"Enter 4 to get DFS of the graph"<<endl;
+        cout<<"Enter -1 to exit"<<endl;
+        cin>>choice;
+        if (choice==1){
+            g.Create();
+        }else if (choice==2){
+            g.Display();
+        }else if (choice==3){
+            g.BFS();
+        }else if (choice==4){
+            g.DFS();
+        }
+        else if (choice==-1){
+            break;
+        }
+    }
+    
 }
