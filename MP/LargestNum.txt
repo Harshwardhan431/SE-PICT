@@ -1,0 +1,57 @@
+section .data
+    array dq 1h,2h,3h,4h,5h
+    msg db "Largest number is:", 0ah
+    len1 equ $-msg
+
+section .bss
+    ncount resb 1
+    largest resq 4
+    count resb 1
+    large resb 16
+    
+section .text
+    global _start
+
+_start:
+
+    mov byte[largest],00
+    mov byte[ncount],5
+    mov rsi,array
+    loop1:
+        
+        mov rdx,qword[rsi]
+        cmp rdx,[largest]
+        jg label
+        jmp next
+        
+        label:
+            mov [largest],rdx
+        next:    
+            add rsi,8
+            dec byte[ncount]
+            jnz loop1
+    mov byte[count],16
+    mov rbx,qword[largest]
+    mov rsi,large
+    loop2:
+        rol rbx,4
+        mov cl,bl
+        and cl,0Fh
+        cmp cl,09h
+        jbe loop3
+        add cl,07h
+        loop3:
+            add cl,30h
+            mov byte[rsi],cl
+            inc rsi
+            dec byte[count]
+            jnz loop2
+    
+    mov rax,1
+    mov rdi,1
+    mov rsi,large
+    mov rdx,16
+    syscall
+    mov rax, 60
+    mov rdi, 0
+    syscall
