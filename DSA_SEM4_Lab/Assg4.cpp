@@ -43,6 +43,7 @@ class HashTable
         cout<<"The value at "<<key<<" is "<<hasharr[(ind+i)%n].name<<endl;
 
     }
+
     int comp(int key){
         int ind=getCode(key);
         int i=0;

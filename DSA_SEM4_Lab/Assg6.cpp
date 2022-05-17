@@ -43,7 +43,8 @@ class Graph{
         vertices=v;
         edges=e;
         head=new Node*[vertices];
-        for(int i=0;i<vertices;i++){
+        for(int i=0;i<vertices;i++)
+        {
             head[i]=nullptr;
         }
     }
@@ -58,22 +59,21 @@ class Graph{
             cout<<"Enter the destination"<<endl;
             cin>>destination;
             
-            if (head[source]==nullptr){
-                Node* newSource=new Node(source);
-                head[source]=newSource;
+            Node* temp=head[source];
+            Node* n=new Node(destination);
+
+            if (temp==nullptr)
+            {
+                head[source]=n;
+            }
+            else{
+                while (temp->link!=nullptr)
+                {
+                    temp=temp->link;
+                }
+                temp->link=n;
             }
             
-            if (head[destination]==nullptr){
-                Node* newDestination=new Node(destination);
-                head[destination]=newDestination;
-            }
-            Node* p=head[source];
-            while (p->link!=nullptr)
-            {
-                p=p->link;
-            }
-            Node* desti=new Node(destination);
-            p->link=desti;
         }
     }
 
@@ -94,9 +94,9 @@ class Graph{
 
     void BFS()
     {
-        bool visited[vertices];
+        bool isvisited[vertices];
         for(int i=0;i<vertices;i++){
-            visited[i]=false;
+            isvisited[i]=false;
         }
 
         queue<int> q;
@@ -106,20 +106,21 @@ class Graph{
         {
             int popped=q.front();
             q.pop();
-            if (visited[popped]!=true){
+            if (isvisited[popped]!=true){
                 Node* temp=head[popped];
-                visited[popped]=true;
+                isvisited[popped]=true;
                 cout<<popped<<" ";
                 while (temp!=nullptr)
                 {
-                    if (visited[temp->data]!=true){
+                    if (isvisited[temp->data]!=true){
                         q.push(temp->data);
                     }
-                    temp=temp->link;
                 }
+                
             }
+            
         }
-          cout<<endl;
+        
     }
 
     void DFS()
