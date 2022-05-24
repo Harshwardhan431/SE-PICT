@@ -70,4 +70,4 @@ Subtraction:
 Multiplication:
 	mov rax,[num1]
 	mov rbx,[num2]
-	
+	mul rax

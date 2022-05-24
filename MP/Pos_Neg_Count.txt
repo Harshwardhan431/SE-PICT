@@ -1,3 +1,5 @@
+//pos neg
+
 section .data
 msg1 db "count of positive numbers:"
 len1 equ $-msg1

@@ -249,25 +249,23 @@ int Tree::Height(Node *t)
 
 void Tree::PostOrder_Iter(Node *t)
 {
-    Stack st;
-    Node* temp;
-    while (t!=NULL || st.isEmpty()==false)
+     stack<Node*> s1;
+    stack<int> s2;
+    s1.push(t);
+    
+    while (!s1.empty())
     {
-        if (t!=NULL){
-            st.Push(t);
-            t=t->lchild;
-        }else{
-            temp=st.Pop();
-            if (temp->data>0){
-                temp->data=-temp->data;
-                st.Push(temp);
-                t=temp->rchild;
-            }else{
-                temp->data=-temp->data;
-                cout<<(temp->data)<<" ";
-                t=NULL;
-            }
-        }
+        Node* curr=s1.top();
+        s1.pop();
+        s2.push(curr->data);
+        if (curr->lchild!=nullptr)s1.push(curr->lchild);
+        if (curr->rchild!=nullptr)s1.push(curr->rchild);
+    }
+    while (!s2.empty())
+    {
+        int x=s2.top();
+        cout<<x<<" ";
+        s2.pop();
     }
 }
 

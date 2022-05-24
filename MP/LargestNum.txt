@@ -1,3 +1,5 @@
+//largest num
+
 section .data
     array dq 1h,2h,3h,4h,5h
     msg db "Largest number is:", 0ah

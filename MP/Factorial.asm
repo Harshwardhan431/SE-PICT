@@ -49,8 +49,6 @@ up:
 	mov ax,01H
 	xor rbx,rbx
 
-	
-
 A:
 	
 	pop bx
